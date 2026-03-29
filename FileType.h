@@ -5,7 +5,7 @@
 
 class FileType {
 public:
-    static std::string getFileType(const std::string& filePath);  // 声明文件格式识别函数
+    static std::string getFileType(const std::string& filePath);  // 文件类型识别函数声明
 };
 
 #endif

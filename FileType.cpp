@@ -1,22 +1,48 @@
 #include "FileType.h"
 #include <fstream>
+#include <algorithm>
 
+// 判断文件类型
 std::string FileType::getFileType(const std::string& filePath) {
-    std::ifstream file(filePath, std::ios::binary);  // 打开文件，以二进制模式读取
-    if (!file) {
-        return "无法打开文件";  // 如果文件无法打开，返回错误信息
-    }
+    // 转为小写，统一处理文件扩展名
+    std::string lowerPath = filePath;
+    std::transform(lowerPath.begin(), lowerPath.end(), lowerPath.begin(), ::tolower);
 
-    char buffer[4];  // 缓冲区用于存储文件头的前4个字节
-    file.read(buffer, 4);  // 读取文件的前4个字节
-    if (file.gcount() < 4) {
-        return "文件过小无法识别";  // 如果文件小于4个字节，无法识别
+    // 判断文件扩展名
+    if (lowerPath.find(".txt") != std::string::npos) {
+        return "文本文件";
     }
-
-    // 判断文件类型，根据文件头信息
-    if (buffer[0] == 0x50 && buffer[1] == 0x4B) {  // ZIP文件的标识为 "PK"
-        return "ZIP压缩文件";
+    else if (lowerPath.find(".jpg") != std::string::npos || lowerPath.find(".jpeg") != std::string::npos) {
+        return "JPEG 图片";
     }
-
-    return "未知文件类型";  // 如果无法识别文件类型，返回 "未知文件类型"
+    else if (lowerPath.find(".png") != std::string::npos) {
+        return "PNG 图片";
+    }
+    else if (lowerPath.find(".gif") != std::string::npos) {
+        return "GIF 图片";
+    }
+    else if (lowerPath.find(".zip") != std::string::npos) {
+        return "ZIP 压缩文件";
+    }
+    else if (lowerPath.find(".rar") != std::string::npos) {
+        return "RAR 压缩文件";
+    }
+    else if (lowerPath.find(".mp4") != std::string::npos) {
+        return "MP4 视频";
+    }
+    else if (lowerPath.find(".avi") != std::string::npos) {
+        return "AVI 视频";
+    }
+    else if (lowerPath.find(".pdf") != std::string::npos) {
+        return "PDF 文件";
+    }
+    else if (lowerPath.find(".doc") != std::string::npos || lowerPath.find(".docx") != std::string::npos) {
+        return "Word 文档";
+    }
+    else if (lowerPath.find(".xls") != std::string::npos || lowerPath.find(".xlsx") != std::string::npos) {
+        return "Excel 文件";
+    }
+    else {
+        return "未知文件类型";
+    }
 }
